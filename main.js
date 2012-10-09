@@ -9,11 +9,11 @@ define(function(require, exports) {
     var Main = new Class('Main', {
         relay:false,
         render:function() {
-            seajs.log('Main.render ing...')
             //start load
             var that = this;
             $('#J_getOrder').click(function(el){
                 that.deliver({code : 'mi.order.render',body:{}});
+                //that.deliver({code : 'mi.order.render',body:{}});
                 $('#orderContainer').removeClass('load-order');
                 $('#J_getOrder').remove();
             })
@@ -22,5 +22,5 @@ define(function(require, exports) {
             'mi.main.render' : 'render'
         }
     }).inherits(ModuleBase);
-    return function (node){ return new Main(node)};
+    return Main;
 });

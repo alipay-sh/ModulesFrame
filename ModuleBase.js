@@ -30,6 +30,7 @@ define(function(require, exports, module) {
             this.applyInterface.apply(this, ['deliver'].concat(cellula._util.slice.call(arguments)));
         }
     }).inherits(cellula.Cell);
+    
 
     /** 对外接口 */
     return ModuleBase;

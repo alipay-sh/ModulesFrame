@@ -14,6 +14,7 @@ define(function(require, exports) {
             $('.detail-more a').html('更多详情').toggle(function() {
                 $('#detail').html('订单详情正在加载中...');
                 that.deliver({code : 'mi.detail.render',body:''});
+                console.log('更多详情')
                 $(this).html('折叠详情');
             }, function() {
                 that.showShortDetail();
@@ -25,6 +26,7 @@ define(function(require, exports) {
                 $(this).addClass("pay-disabled");
                 $('#paySuccessTip').html('订单正在提交中...');
             });
+            console.log('Order rendering')
 
 
         },
@@ -43,7 +45,5 @@ define(function(require, exports) {
         }
     }).inherits(ModuleBase);
 
-    return function (node) {
-        return new Order(node)
-    };
+    return Order;
 });

@@ -5,10 +5,9 @@ define(function(require, exports, module) {
     var $ = require('$');
     var mcenter = require('message');
     var cellula = require('cellula');
-    var SYNCSpect = require('SYNCSpect');
     var moduleClassName = ".module";
     var Stage = {
-        modules:[],
+        modules:{},
         _init:function() {
             this._parseModulesByDom($(document.body))
         },
@@ -16,13 +15,15 @@ define(function(require, exports, module) {
             var tmpChildMod=[];
             $(moduleClassName, dom).each(function(index, el) {
                 seajs.use($(el).attr('data-module'), function(mo) {
-                    var tmp = mo($(el));
+                    if(Stage.modules[$(el).attr('data-module')]){
+                        return
+                    }
+                    var tmp = new mo($(el));
                     //To registration message center for the instance
                     mcenter.subscribe(tmp);
                     tmp.on('DOMLOADED', Stage.onModuleDomLoadedHandler);
                     seajs.log('A new module has been bulid. cid = ' + tmp.__cid__);
-                    Stage.modules.push(tmp);
-                    tmpChildMod.push(tmp);
+                    Stage.modules[$(el).attr('data-module')]=tmp;
                 });
             });
             return tmpChildMod;

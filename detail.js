@@ -9,8 +9,9 @@ define(function(require, exports) {
         relay:true,
         render:function() {
             $(this.rootNode).show();
+            $('#price').html(Number($('#price').html())+1);
             this.deliver({code : 'mi.order.hideShortDetail',body:''});
-            console.log('Detail.render');
+            seajs.log('Detail.render');
         },
         hide:function(){
             console.log('do mi.detail.hide');
@@ -22,5 +23,5 @@ define(function(require, exports) {
         }
     }).inherits(ModuleBase);
 
-    return function (node){ return new Detail(node)};
+    return Detail;
 });

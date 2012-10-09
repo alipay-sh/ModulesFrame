@@ -8,15 +8,61 @@ define(function(require, exports, module) {
     var $ = require('$');
     var Aspect = require('mi.util.Aspect');
     var cellula = require('cellula');
+    var ajaxQueue = {
+        queue:[],
+        call:function(config, callback, asyncspect) {
+            var tmpAjax = ajaxQueue.getAjaxByUrl(config.url);
+            if (tmpAjax) {
+                if (!jQuery.isArray(tmpAjax.success)) {
+                    tmpAjax.success = [tmpAjax.success];
+                }
+                tmpAjax.success.push(config[callback + '_Asyn']);
+            } else {
+                var tmpAjaxInstance = $.ajax({
+                    url: config.url + (config.refresh ? ('?t=' + new Date().getTime()) : ''),
+                    data: config.data,
+                    type: config.method,
+                    timeout: config.timeout,
+                    dataType: config.dataType,
+                    success: [function(response) {
+                        ajaxQueue.delAjaxByUrl(config.url);
+                        if (config.dataType == 'text') {
+                            $(config.rootNode).html($(response));
+                        }
+                        asyncspect._execute(config, callback);
+                    }]
+                });
+                tmpAjaxInstance.url = config.url;
+                ajaxQueue.queue.push(tmpAjaxInstance);
+            }
+        },
+        getAjaxByUrl:function(url) {
+            $.each(ajaxQueue.queue, function(index, value) {
+                if (value.url == url) {
+                    return value;
+                }
+            });
+            return null;
+        },
+        delAjaxByUrl:function(url) {
+            $.each(ajaxQueue.queue, function(index, value) {
+                if (value) {
+                    if (value.url == url) {
+                        ajaxQueue.queue.splice(index, 1);
+                        seajs.log('remove ajaxQueue :'+value.url);
+                        return value;
+                    }
+                }
+            });
+            return null;
+        }
+    };
     var asyncspect = {
         _init: function(module) {
             var node = module.rootNode;
             var config = {
                 /** 是否已同步加载*/
                 sync: !!node.attr('data-sync'),
-
-                /** 是否支持重复请求 */
-                refresh: !!node.attr('data-refresh'),
 
                 /** 数据请求返回类型html, text, script, xml, json, jsonp */
                     // TODO should separate success func for different mime types
@@ -48,23 +94,11 @@ define(function(require, exports, module) {
         /**
          * ajax get data||text||html
          * @param config
+         * todo:需要加callback队列
          */
         _load: function(config, callback) {
-           
             if (!config.sync) {
-                $.ajax({
-                    url: config.url + (config.refresh ? ('?t=' + new Date().getTime()) : ''),
-                    data: config.data,
-                    type: config.method,
-                    timeout: config.timeout,
-                    dataType: config.dataType,
-                    success: function(response) {
-                        if (config.dataType == 'text') {
-                            $(config.rootNode).html($(response));
-                        }
-                        asyncspect._execute(config, callback);
-                    }
-                });
+                ajaxQueue.call(config, callback, asyncspect);
             } else {
                 callback && config[callback + '_Asyn'] && (config[callback + '_Asyn']());
             }
