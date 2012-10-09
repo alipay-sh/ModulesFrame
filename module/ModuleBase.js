@@ -14,7 +14,8 @@ define(function(require, exports, module) {
             this.clean();
             //add aspect to module's api function
             ASYNCSpect.aspect(this);
-            if (!this.relay) {
+            //relay表示用户触发，如果是用户触发，则不主动运行render入口
+            if (!this.relay || this.sync) {
                 this.render();
             }
         },
@@ -26,7 +27,7 @@ define(function(require, exports, module) {
             return this._apiMap;
         },
         _apiMap : {},
-        modules:[],
+        //modules:[],
         deliver : function() {
             this.applyInterface.apply(this, ['deliver'].concat(cellula._util.slice.call(arguments)));
         }
