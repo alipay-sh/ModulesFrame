@@ -26,6 +26,7 @@ define(function(require, exports, module) {
             return this._apiMap;
         },
         _apiMap : {},
+        modules:[],
         deliver : function() {
             this.applyInterface.apply(this, ['deliver'].concat(cellula._util.slice.call(arguments)));
         }

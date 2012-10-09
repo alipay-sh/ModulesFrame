@@ -11,9 +11,11 @@ define(function(require, exports) {
         render:function() {
             //start load
             var that = this;
-            $('#J_getOrder').click(function(el){
+            $('#J_getOrder').click(function(el) {
                 that.deliver({code : 'mi.order.render',body:{}});
-                //that.deliver({code : 'mi.order.render',body:{}});
+                that.deliver({code : 'mi.order.render',body:{}});
+                that.deliver({code : 'mi.order.render',body:{}});
+                that.deliver({code : 'mi.order.render',body:{}});
                 $('#orderContainer').removeClass('load-order');
                 $('#J_getOrder').remove();
             })

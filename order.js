@@ -9,12 +9,9 @@ define(function(require, exports) {
         relay:true,
         render:function() {
             var that = this;
-
-
             $('.detail-more a').html('更多详情').toggle(function() {
                 $('#detail').html('订单详情正在加载中...');
                 that.deliver({code : 'mi.detail.render',body:''});
-                console.log('更多详情')
                 $(this).html('折叠详情');
             }, function() {
                 that.showShortDetail();

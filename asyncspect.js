@@ -13,7 +13,7 @@ define(function(require, exports, module) {
         call:function(config, callback, asyncspect) {
             var tmpAjax = ajaxQueue.getAjaxByUrl(config.url);
             if (tmpAjax) {
-                if (!jQuery.isArray(tmpAjax.success)) {
+                if (!$.isArray(tmpAjax.success)) {
                     tmpAjax.success = [tmpAjax.success];
                 }
                 tmpAjax.success.push(config[callback + '_Asyn']);
@@ -28,8 +28,11 @@ define(function(require, exports, module) {
                         ajaxQueue.delAjaxByUrl(config.url);
                         if (config.dataType == 'text') {
                             $(config.rootNode).html($(response));
+                            (config._fill_times)?config._fill_times++:(config._fill_times=1);
+                            seajs.log(config.__cid__+' dom has been  fill,times='+config._fill_times)
                         }
                         asyncspect._execute(config, callback);
+                        config.trigger('DOMLOADED', config);
                     }]
                 });
                 tmpAjaxInstance.url = config.url;
@@ -37,24 +40,26 @@ define(function(require, exports, module) {
             }
         },
         getAjaxByUrl:function(url) {
+            var result = null;
             $.each(ajaxQueue.queue, function(index, value) {
                 if (value.url == url) {
-                    return value;
+                    result =  value;
                 }
             });
-            return null;
+            return result;
         },
         delAjaxByUrl:function(url) {
+            var result = null;
             $.each(ajaxQueue.queue, function(index, value) {
                 if (value) {
                     if (value.url == url) {
                         ajaxQueue.queue.splice(index, 1);
                         seajs.log('remove ajaxQueue :'+value.url);
-                        return value;
+                        result =  value;
                     }
                 }
             });
-            return null;
+            return result;
         }
     };
     var asyncspect = {
@@ -82,7 +87,6 @@ define(function(require, exports, module) {
         },
 
         _execute: function(module, callback) {
-            module.trigger('DOMLOADED', module);
             callback && module[callback + '_Asyn'] && (module[callback + '_Asyn']());
             asyncspect._clean(module);
         },

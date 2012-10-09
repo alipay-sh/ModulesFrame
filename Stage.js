@@ -16,7 +16,7 @@ define(function(require, exports, module) {
             $(moduleClassName, dom).each(function(index, el) {
                 seajs.use($(el).attr('data-module'), function(mo) {
                     if(Stage.modules[$(el).attr('data-module')]){
-                        return
+                        return tmpChildMod
                     }
                     var tmp = new mo($(el));
                     //To registration message center for the instance
@@ -32,7 +32,9 @@ define(function(require, exports, module) {
             seajs.log(mod.__cid__ + " module's dom has loaded.");
             if (mod) {
                 //Potential problem : deepCopy problem
-                mod.modules = Stage._parseModulesByDom(mod.rootNode);
+                $.each(Stage._parseModulesByDom(mod.rootNode),function(index,value){
+                    mod.modules.push(value);
+                })
             }
         },
         getModuleById:function(id) {
