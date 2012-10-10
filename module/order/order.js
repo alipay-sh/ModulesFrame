@@ -12,8 +12,9 @@ define(function (require, exports) {
             var that = this;
             $('.detail-more a').html('更多详情').toggle(function () {
                 $('#detail').html('订单详情正在加载中...');
-                that.deliver({code:'mi.detail.render', body:''});
+                that.deliver({code:'mi.detail.show', body:''});
                 $(this).html('折叠详情');
+                seajs.log('更多详情按钮被点击')
             }, function () {
                 that.showShortDetail();
                 that.deliver({code:'mi.detail.hide', body:''});
@@ -25,7 +26,6 @@ define(function (require, exports) {
                 $('#paySuccessTip').html('订单正在提交中...');
             });
             stage.registerModuleEvents('module.amount', 'amountChange', this.onAmountChangeHandler)
-            //console.log(stage.getModuleByClassName('module.amount'))
         },
         onAmountChangeHandler:function () {
             $('#tip').html('金额发生变化');

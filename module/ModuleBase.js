@@ -1,4 +1,4 @@
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     var cellula = require('cellula');
     var mc = require('message');
     var $ = require("$");
@@ -7,7 +7,7 @@ define(function(require, exports, module) {
      * 模块抽象类，不被实例化
      */
     var ModuleBase = new cellula.Class('ModuleBase', {
-        init:function(node) {
+        init:function (node) {
             this._super();
             node && (this.rootNode = node);
             this.registerInterface('deliver', mc);
@@ -19,20 +19,20 @@ define(function(require, exports, module) {
                 this.render();
             }
         },
-        render:function() {
+        render:function () {
         },
-        clean:function() {
+        clean:function () {
         },
-        getApiMap:function() {
+        getApiMap:function () {
             return this._apiMap;
         },
-        _apiMap : {},
+        _apiMap:{},
         //modules:[],
-        deliver : function() {
+        deliver:function () {
             this.applyInterface.apply(this, ['deliver'].concat(cellula._util.slice.call(arguments)));
         }
     }).inherits(cellula.Cell);
-    
+
 
     /** 对外接口 */
     return ModuleBase;

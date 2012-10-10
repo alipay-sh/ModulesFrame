@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title> 同步加载 demo </title>
+    <meta name="author" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+
+    <link type="text/css" href="css/css.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container module" id="main" data-module="module.main" data-sync="true" data-url="module/main/main.html">
+    <div id="orderContainer" class="">
+
+
+        <div class="module" data-module="module.order" data-refresh="true" data-sync="true"
+             data-url="module/order/order.html">
+            <div class="order">
+                <div class="order-nav">您正在使用的是独立担保交易<span id="tip" class="tip"></span></div>
+                <div class="order-detail">
+                    <div class="detail">
+                        <div id="detailShort" >
+                            <h3 class="product-name">商品名称商品名称商品名称商品名...<span class="saler">卖家昵称：张三张三...</span></h3>
+                        </div>
+                        <div class="module" data-module="module.detail" data-sync="true" data-refresh="true"
+                             data-url="module/detail/detail.html" style="display: none; "><h3 class="product-name">
+                            商品名称商品名称商品名称商品名商品名称商品名称商品名称商品名商品名称商品名称商品名称商品名商品名称商品名称商品名称商品名</h3>
+                            <ul class="list">
+                                <li>卖家昵称：张三张三张三</li>
+                                <li>交易金额：商品90.00元 + 运费 10.00元 = 100.00元</li>
+                                <li>交易时间：xx年xx月xx日 xx时xx分xx秒</li>
+                                <li>交易号：46431649679464631316464</li>
+                                <li class="channel-trigger">
+                                    支付渠道：<a>显示支付渠道</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="detail" style="display: none; ">订单详情正在加载中...</div>
+                    </div>
+                    <div class="amount module" data-module="module.amount" data-refresh="true" data-sync="true"
+                         data-url="module/amount/amount.html">
+                        <span class="price" id="price">200.00</span> 元
+                        <a id="J_refresh" href="#">刷新</a>
+
+                        <p class="ori-price">原价：
+                            <del>250.00</del>
+                            元
+                        </p>
+                    </div>
+                    <div class="detail-more">
+                        <a href="#">折叠详情</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="channel" class="channel"></div>
+
+            <div class="pay-button">
+                <!-- <a class="module" data-module="module.pay" data-refresh="true" target = "paySuccessTip" href="module/pay/pay.html">确认支付</a> -->
+                <div class="pay-success-tip" id="paySuccessTip"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="sea.js" charset="utf-8"></script>
+<script>
+    seajs.config({
+        alias:{
+            '$':'jq.js',
+            'stage':'Stage',
+            'ASYNCSpect':'asyncspect',
+            /** 模块基类 */
+            'mi.net.ModuleBase':"module/ModuleBase",
+            'mi.util.Aspect':"Aspect",
+            /*主模块*/
+            'module.main':"module/main/main",
+            'module.order':'module/order/order',
+            'module.detail':'module/detail/detail',
+            'module.amount':'module/amount/amount',
+            'cellula':'cellula-0.3.2',
+            'mi.util.Parser':'Parser',
+            'message':'message'
+        },
+
+        debug:2,
+
+        base:"./",
+
+        charset:'utf-8'
+
+    });
+
+    seajs.use(['stage', '$'], function (stage, $) {
+        $(document).ready(function () {
+            stage.run();
+        });
+
+    })
+</script>
+</body>
+</html>

@@ -19,6 +19,9 @@ define(function(require, exports) {
                 $('#orderContainer').removeClass('load-order');
                 $('#J_getOrder').remove();
             })
+            if(this.sync){
+                that.deliver({code : 'mi.order.render',body:{}});
+            }
         },
         _apiMap : {
             'mi.main.render' : 'render'
