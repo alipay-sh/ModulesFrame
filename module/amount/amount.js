@@ -5,7 +5,6 @@ define(function (require, exports) {
     var Class = require('cellula').Class;
     var $ = require('$');
     var ModuleBase = require('mi.net.ModuleBase');
-    var ASYNCSpect = require('ASYNCSpect');
     var Amount = new Class('Amount', {
         relay:true,
         render:function () {
