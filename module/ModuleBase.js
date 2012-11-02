@@ -20,11 +20,6 @@ define(function (require, exports, module) {
             util.each(this._mcMap,function(v){
                 if(this[v]) util.aspect(this).wrap(v, this._load);
             }, this);
-
-            //relay表示用户触发，如果是用户触发，则不主动运行render入口
-            if (!this.relay || this._conf.sync) {
-                this.render();
-            }
         },
         _config:function () {
             var conf = {},el = this.rootNode;
@@ -37,26 +32,32 @@ define(function (require, exports, module) {
             this._conf = conf;
         },
         _load:function () {
-            var module = this, _origin = this._origin, args = arguments, conf = module._conf;
-
+            var module = this, _origin = this._origin, conf = module._conf;
             if (!conf.sync) {
-                var tmpAjax = ajaxQueue.get(conf.url);
+                var tmpAjax = ajaxQueue.get(conf.url), args = arguments, tmpCall;
+
                 if (tmpAjax) {
-                    if (!$.isArray(tmpAjax.success)) tmpAjax.success = [tmpAjax.success];
-                    return tmpAjax.success.push(module._origin);
+                    return tmpAjax.wait.push(function(response){
+                        return _origin.apply(module, args);
+                    });
                 } else {
-                    var tmpAjaxInstance = $.ajax({
+                    tmpAjax = {url:conf.url,wait:[]};
+                    ajaxQueue.queue.push(tmpAjax);
+                    var cbs = function (response) {console.log('sus');
+                        while (tmpCall = tmpAjax.wait.shift()) tmpCall.call(module, response);
+                    };
+                    tmpAjax.wait.push(function (response) {
+                        return module._loadSuccess.call(module, response, _origin, args);
+                    });
+                    tmpAjax.instance = $.ajax({
                         url:conf.url + ('?t=' + new Date().getTime()),
                         context:module,
                         type:conf.method,
                         timeout:conf.timeout,
                         dataType:conf.type,
-                        success:[function (response) {
-                            return module._loadSuccess.call(module, response, _origin, args);
-                        }]
+                        success:cbs
                     });
-                    tmpAjaxInstance.url = conf.url;
-                    return ajaxQueue.queue.push(tmpAjaxInstance);
+                    console.log('sus2');
                 }
             } else {
                 return _origin.apply(this, arguments);

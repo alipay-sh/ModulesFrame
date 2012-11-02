@@ -1,9 +1,16 @@
 define(function (require, exports, module) {
     var util = require('cellula')._util;
     var ajaxQueue = {
+        /**
+         * {
+         *     url:@String
+         *     instance:@Object
+         *     wait:@Array
+         * }
+         */
         queue:[],
         get:function (url) {
-            var result = null;
+            var result;
             util.each(ajaxQueue.queue, function (value) {
                 if (value.url === url) {
                     result = value;

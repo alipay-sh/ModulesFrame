@@ -23,7 +23,10 @@ define(function (require, exports, module) {
                     //To registration message center for the instance
                     mcenter.subscribe(tmp);
                     tmp.on('DOMLOADED', Stage._onModuleDomLoadedHandler);
+                    //relay表示用户触发，如果是用户触发，则不主动运行render入口
+                    if (!tmp.relay || tmp._conf.sync) tmp.render();
                     Stage.modules[name] = tmp;
+console.log(name);
                 });
             });
         },

@@ -19,7 +19,7 @@ define(function(require, exports) {
                 $('#orderContainer').removeClass('load-order');
                 $('#J_getOrder').remove();
             });
-            if(this.sync){
+            if(this._conf.sync){
                 that.deliver({code : 'mi.order.render',body:{}});
             }
         },

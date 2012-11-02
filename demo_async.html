@@ -18,6 +18,7 @@
 
 <script src="sea.js" charset="utf-8"></script>
 <script>
+    window.console = window.console || function(){};
     seajs.config({
         alias:{
             '$':'jq.js',
@@ -32,52 +33,14 @@
             'cellula':'cellula-0.3.2',
             'message':'message'
         },
-
         debug:true,
-
         charset:'utf-8'
-
     });
 
     seajs.use(['stage', '$'], function (stage, $) {
         $(document).ready(function () {
             stage.init(document.body);
         });
-    });
-
-    seajs.use('cellula', function (c) {
-        var a = c._util.aspect;
-        var cc = {
-            ccc:function () {
-                console.log('im ccc in cc');
-                return 'a end';
-            },
-            ddd:function(d){
-                console.log('im ddd in cc');
-                return d + ' end';
-            }
-        };
-        a(cc).before('ccc', function (a) {
-            console.log('im before!' + a);
-        }, this, '98793');
-
-        a(cc).after('ccc', function (a) {
-            console.log('im after!' + a);
-        }, this, '09987');
-
-        a(cc).wrap('ddd',function(){
-            console.log('before ddd i will init sth for it');
-
-            var ret = this._origin.apply(this,arguments);
-
-            console.log('after ddd im logging sth for it');
-
-            return ret;
-        });
-        //console.log(a);
-        console.log(cc);
-        console.log(cc.ccc());
-        console.log(cc.ddd('ha~ha'));
     });
 </script>
 </body>
