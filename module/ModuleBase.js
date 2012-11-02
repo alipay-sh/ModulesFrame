@@ -43,7 +43,7 @@ define(function (require, exports, module) {
                 } else {
                     tmpAjax = {url:conf.url,wait:[]};
                     ajaxQueue.queue.push(tmpAjax);
-                    var cbs = function (response) {console.log('sus');
+                    var cbs = function (response) {
                         while (tmpCall = tmpAjax.wait.shift()) tmpCall.call(module, response);
                     };
                     tmpAjax.wait.push(function (response) {
@@ -57,7 +57,6 @@ define(function (require, exports, module) {
                         dataType:conf.type,
                         success:cbs
                     });
-                    console.log('sus2');
                 }
             } else {
                 return _origin.apply(this, arguments);

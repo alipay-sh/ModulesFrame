@@ -26,7 +26,6 @@ define(function (require, exports, module) {
                     //relay表示用户触发，如果是用户触发，则不主动运行render入口
                     if (!tmp.relay || tmp._conf.sync) tmp.render();
                     Stage.modules[name] = tmp;
-console.log(name);
                 });
             });
         },
