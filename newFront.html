@@ -590,7 +590,7 @@ span.btn-ok button, span.btn-ok input {
                             <div class="mi-form-explain">账号已经通过验证</div>
                         </div>
                         <div class="mi-form-item" id="J_fakePwdContainer2">
-                            <label class="mi-label">校验码：</label>
+                            <label class="mi-label">手机校验码：</label>
                                 <span><input type="password" name="pwd" class="mi-input mi-input-account" value="" id="J_fakePasswordInput2" style="vertical-align: middle;padding: 5px 4px;"></span>
                                 <span style="_display:inline-block; margin-left:4px">
                                     <a target="_blank" href="https://self.alipay.com/selfhelp/passwordfind/index.htm?type=P" style="line-height: 24px;">重新发送</a>
@@ -739,9 +739,14 @@ seajs.use(['excashier/stage/0.0.1/stage-debug', 'jquery', 'excashier/xbox/1.0.0/
         hideAllPanel();
         $('div[data-account='+this.id+']').show();
         $('.ui-step-item').removeClass('ui-step-current');
+        $('.ui-step-item').removeClass('ui-step-finished');
+
 
         if(/(J_moaWithNull)/.test(this.id)) $('.ui-step-item').eq(0).addClass('ui-step-current');
-        else $('.ui-step-item').eq(1).addClass('ui-step-current');
+        else{
+            $('.ui-step-item').eq(1).addClass('ui-step-current');
+            $('.ui-step-item').eq(0).addClass('ui-step-finished');
+        }
         //if(!/(J_moaWithNull)/.test(this.id)) $('.ui-step-item').eq(1).addClass('ui-step-current');
 
     });
