@@ -1,0 +1,766 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<script type="text/javascript">
+    window.history.forward();
+    window.onunload = function(){window.history.forward();};
+</script>
+<meta charset="utf-8">
+<title>支付宝 - 网上支付 安全快速！</title>
+<link rel="icon" href="http://img.alipay.net/common/favicon/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://img.alipay.net/common/favicon/favicon.ico" type="image/x-icon" />
+<!-- CMS:/alipay/tracker/seajs.vm开始:/alipay/tracker/seajs.vm -->	
+<script charset="utf-8" id="seajsnode" src="http://assets.p337.alipay.net/seajs/1.3.1/??sea.js,plugin-combo.js"></script>
+<script>
+  (function(){
+    var GALLERY_MODULES = [
+      'async','backbone','coffee','cookie','es5-safe','handlebars','iscroll',
+      'jasmine','jasmine-jquery','jquery','jquery-color','json','keymaster',
+      'labjs','less','marked','moment','mustache','querystring','raphael',
+      'socketio','store','swfobject','underscore','zepto','ztree'
+    ];
+
+    var ARALE_MODULES = [
+      'autocomplete','base','calendar','class','cookie','dialog','easing',
+      'events','iframe-uploader','iframe-shim','messenger','overlay','popup',
+      'position','select','switchable','tip','validator','widget'
+    ];
+
+    var util = seajs.pluginSDK.util;
+
+    function contains(arr, item) {
+      return util.indexOf(arr, item) > -1
+    }
+
+    function map(id) {
+      id = id.replace('#', '');
+
+      var parts = id.split('/');
+      var len = parts.length;
+      var root, name;
+
+      // id = root/name/x.y.z/name
+      if (len === 4) {
+        root = parts[0];
+        name = parts[1];
+
+        // gallery 或 alipay 开头的没有问题
+        if (root === 'alipay' || root === 'gallery') {
+          return id;
+        }
+
+        // arale 开头的
+        if (root === 'arale') {
+          // 处理 arale/handlebars 的情况
+          if (contains(GALLERY_MODULES, name)) {
+            return id.replace('arale/', 'gallery/');
+          } else {
+            return id;
+          }
+        }
+      }
+      // id = name/x.y.z/name
+      else if (len === 3) {
+        name = parts[0]
+
+        // 开头在 GALLERY_MODULES 或 ARALE_MODULES
+        if (contains(GALLERY_MODULES, name)) {
+          return 'gallery/' + id;
+        } else if (contains(ARALE_MODULES, name)) {
+          return 'arale/' + id;
+        }
+      }
+
+      return id;
+    }
+
+    seajs.config({
+      alias: {
+        '$': 'gallery/jquery/1.7.2/jquery',
+        '$-debug': 'gallery/jquery/1.7.2/jquery-debug',
+        'jquery': 'gallery/jquery/1.7.2/jquery'
+      }
+    });
+
+    var _use = seajs.use;
+
+    seajs.use = function(ids, callback) {
+      if (typeof ids === 'string') {
+        ids = [ids];
+      }
+
+      ids = util.map(ids, function(id) {
+        return map(id);
+      });
+
+      return _use(ids, callback);
+    }
+
+  })();
+</script>
+<link rel="stylesheet" href="http://dev.assets.alipay.net/al/alice.base-1.0.css">
+<link rel="stylesheet" href="http://dev.assets.alipay.net/al/alice.components.ui-step-1.0-SNAPSHOT-full.css">
+<link charset="utf-8" rel="stylesheet" href="http://assets.p337.alipay.net/excashier/excashier.base-1.1-login-src.css" media="all" />
+<link charset="utf-8" rel="stylesheet" href="http://assets.p337.alipay.net/al/alice.components.security-core-2.1-src.css" media="all" />
+<style type="text/css">
+html {
+    color: #4D4D4D;
+}
+
+#content .ui-form-item {
+    padding: 0 0 20px 100px;
+}
+#content .ui-form-explain{
+    height:18px
+}
+#content .ui-label {
+    padding-top: 1px;
+    _padding-top: 2px;
+}
+#content .ui-securitycore .ui-form-other {
+    _margin-left: 8px;
+}
+/**
+安全产品样式覆盖
+**/
+.ui-securitycore .ui-input {
+    width: 174px;
+    padding: 1px 4px;
+    height: 22px;
+}
+.ui-securitycore .ui-checkcode-input {
+    width: 100px;
+}
+
+.ft-red {
+    color: red;
+}
+
+.alieditContainer *{
+	vertical-align:bottom;
+}
+.alieditContainer{
+	display:inline-block;*display:inline;zoom:1;width:184px;height:24px;vertical-align:bottom;position: relative;
+}
+.alieditContainer object{width:100%;height:24px;}
+.alieditContainer a.aliedit-install{
+	border:1px solid #AEAEAE;line-height:24px;color:#06F!important;_width:184px;min-width:184px;height:100%;display:block;text-align:center;
+}
+
+.mi-loading-text {
+    margin-left: 5px;
+}
+
+.mi-form-explain {
+    height:18px;
+}
+.mi-label {
+    padding:1px 0 6px;
+    padding:3px 0 0\9;
+    *padding:2px 0 0;
+    _padding:1px 0 0;
+}
+.anti-fishing h2 {
+    border-bottom: 1px solid #CCCCCC;
+    font-size: 16px;
+    font-weight:bold;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+.anti-fishing h3 {
+    font-size: 14px;
+    font-weight:bold;
+    margin: 8px 0;
+    padding: 3px 8px 3px 0;
+}
+.anti-fishing p {
+    padding: 8px 0;
+}
+.anti-fishing ul {
+    padding: 0 0 0 20px;
+}
+.anti-fishing li {
+    padding: 5px 0;
+}
+.anti-fishing li input {
+    margin: 0 5px 0 0;
+    vertical-align: middle;
+}
+span.btn {
+    display: inline-block;
+    line-height: 100%;
+    text-align: left;
+    text-decoration: none;
+    vertical-align: middle;
+}
+span.btn, span.btn input, span.btn button {
+    background-image: url("https://img.alipay.com/tp/frame/v1/bg-tp.png");
+    background-repeat: repeat-x;
+    border: medium none;
+    cursor: pointer;
+    outline: medium none;
+}
+span.btn-ok, span.btn-ok-hover, span.btn-ok-disabled {
+    border: 1px solid #D74C00;
+    font-family: SimSun;
+    font-size: 14px;
+    padding: 1px;
+}
+span.btn-ok {
+    background-position: 0 0;
+    margin-left: 0;
+}
+span.btn input, span.btn button, {
+    vertical-align: baseline;
+}
+span.btn-ok button, span.btn-ok input, span.btn-ok-hover button, span.btn-ok-hover input {
+    color: #FFFFFF;
+    font-weight: bold;
+    height: 29px;
+    line-height: 28px;
+    padding: 0 16px 3px;
+}
+span.btn-ok button, span.btn-ok input {
+    background-position: 0 -70px;
+    font-family: SimSun;
+    height: 29px;
+}
+.view-case {
+    padding: 8px 0 10px 20px;
+}
+.sub-th{
+    width:66px;
+}
+.order {
+    z-index:2;
+}
+.ui-detail {
+    padding-top:0;
+}
+.ui-detail .separate {
+    margin-bottom: 3px;
+}
+.ui-tip .ui-dialog-container {
+    width: 330px;
+}
+.teBox {
+    height: 340px;
+}
+#footer {
+    background-color: #fff;
+}
+.commodity-message-row .first {
+    width:auto;
+}
+.commodity-message-row .second {
+    margin-top:2px;
+}
+#content .ui-label {
+    color:#4D4D4D;
+    font:14px/1.5 tahoma,arial,\5b8b\4f53;
+}
+.ui-form-item a {
+    font:12px/1.5 tahoma,arial,\5b8b\4f53;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+ 
+    .ui-detail .separate {
+        margin-bottom: 4px;
+    }
+}
+#umFlash {
+    display:none;
+}
+</style>
+</head>
+<body>
+<div id="container">
+ 
+<!-- CMS:全站顶部公告开始:alipay/notice/headNotice.vm --><!-- CMS:全站顶部公告结束:alipay/notice/headNotice.vm -->
+<div id="header">
+    <h1 class="logo"><span send="link-logo"></span></h1>
+    <ul class="quick-links">
+        <li>您好，欢迎使用支付宝付款！</li>
+        <li>
+            <a href="http://help.alipay.com/lab/help_detail.htm?help_id=238671&keyword=%CA%D5%D2%F8%CC%A8" id="viewFaq" target="_blank">支付遇到问题？</a>
+        </li>
+    </ul>
+</div>
+
+<div id="content" class="fn-clear">
+    <div id="J_order" data-module="excashier/orderDetail_mb/1.0.0/orderDetail_mb" data-mode="SYNC" data-url="">
+
+<div role="order" class="order order-assure">
+    <form data-module="excashier/checkTimeout/0.0.1/checkTimeout" data-mode="SYNC" action="http://excashier.alipay.net/standard/timeOutErrorPage.htm" method="post" id="J_timeoutForm" class="fn-hide">
+        <input type="hidden" name="_form_token" value="jwNC5IyCcurnospDbUC65efGL9mC19NM"/>
+        <input name="orderId" type="hidden" value="86cdedf69ef548c29dcec9b02347bc47" id="orderId" />
+        <input name="orderTimeoutRequestInterval" type="hidden" value="0" id="J_orderTimeoutRequestInterval" />
+        <input name="timeoutCheckUrl" type="hidden" value="http://excashier.alipay.net/standard/payOrderClosedCountDown.json"  />
+        <input type="submit" value="" />
+    </form>
+    <div class="orderDetail-base">
+        <div class="order-extand-explain fn-clear">
+            <span class="fn-left" role="J_orderTypeQuestion" style="cursor: pointer;">
+                <span class="ico-assure"></span>
+                <span>您正在使用担保支付交易</span>
+                <span class="icon-question"></span>
+            </span>
+                        <span class="fn-left create-time" id="teDelay">
+                <span>交易将在<span id="teOrderDelayText">8天19小时</span>后关闭，请及时付款！</span>
+            </span>
+                    </div>
+        <span role="J_orderPrice" class="od-price-cnt">
+            <strong class="amount-font od-price-num">12.00</strong>元
+                                </span>
+        <div class="commodity-message-row">
+            <span class="first long-content" style="_width: 400px;">
+                哈哈哈
+            </span>
+            <span class="second short-content">
+            收款方：快登06
+            </span>
+        </div>
+    </div>
+    
+<div class="ui-tip ui-question-tip fn-hide" seed="question-tip" role="J_orderTypeTip">
+    <div class="ui-dialog-container">
+        <div class="ui-dialog-head-text">
+            <a class="j-apop-close" href="#">关闭</a>
+        </div>
+        <ul class="ui-dialog-content">
+            <li>
+                1、付款后资金直接进入对方帐户并暂由支付宝冻结；
+            </li>
+            <li>
+                2、自付款之日起，您享有15天的服务保障期；
+            </li>
+            <li>
+                3、详情可查看<a href="http://help.alipay.com/lab/help_detail.htm?help_id=250890" target="_blank">《支付宝担保支付服务协议》</a>。
+            </li>
+        </ul>
+    </div>
+    <div class="ui-icon-dialog-arrow">
+        ↓
+    </div>
+</div>
+
+    <span class="orderDetail-more-link fn-clear more-parent-fix icon-parent-fix" role="J_oderDetailMore">
+        <em class="icon more fn-left"></em>
+        <a href="javascript:;" class="j-orderDetail-more fn-left" seed="order-detail-more">订单详情</a>
+    </span>
+    <div class="ui-detail fn-hide" role="J_orderDetailCnt">
+        <div class="ajax-Account od-more-cnt fn-clear">
+            <div class="separate"></div>
+            <div class="ft-break ft-bold ft-14">哈哈哈</div>
+            <ul class="order-detail-container">
+                <li class="order-item">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th class="sub-th">商品名称：</th>
+                            <td>哈哈哈</td>
+                        </tr>
+                        <tr>
+                            <th class="sub-th">商品描述：</th>
+                            <td>阿斯顿发撒旦法</td>
+                        </tr>
+                        <tr>
+                            <th class="sub-th">收款方：</th>
+                            <td>快登06</td>
+                        </tr>
+                        <tr>
+                            <th class="sub-th">订单号：</th>
+                            <td>20121128000052050000000300016719</td>
+                        </tr>
+                        <tr>
+                            <th class="sub-th">交易类型：</th>
+                            <td class="type">
+                                <span>担保支付</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </li>
+            </ul>
+            <span class="order-detail-amount" role="J_orderPriceMore">
+                <strong class="amount-font">12.00</strong>元
+            </span>
+        </div>
+        <iframe src="javascript:''" class="ui-detail-iframe-fix" role="J_orderDetailFrameFix"></iframe>
+    </div>
+    <span class="orderDetail-shrink-link fn-clear shrink-parent-fix icon-parent-fix fn-hide" role="J_oderDetailShrink">
+        <em class="icon shrink fn-left"></em>
+        <a href="javascript:;" class="j-orderDetail-shrink fn-left" seed="order-detail-shrink">订单详情</a>
+    </span>
+</div>
+
+</div>
+
+    <!-- teLogin -->
+    <div id="teLogin">
+<!--
+<div id="teLogin-left" class="teBox" data-module="excashier/loginMemberT/0.0.1/loginMemberT" data-mode="SYNC" data-url="">
+        <div class="teBox-in">
+        <h3>我有支付宝账户，轻松付款：</h3>
+
+        <div>
+            <div class="line"></div>
+        </div>
+        <div class="teForm">
+                       <form action="http://excashier.alipay.net/standard/86cdedf69ef548c29dcec9b02347bc47/templateFlow.json?method=ajaxpost" method="post" class="mi-form" id="J_TloginForm" >
+                                	<input type="hidden" name="_form_token" value="8hVdwnOIuxUN1RpK5TZl6Lawg1rdnqD1"/>
+                    <input type="hidden" name="viewModelId" value="sync$normalPayerAuthViewModel"/>
+                                <input type="hidden" name="commonAccountIdentiAuthUrl" value="http://excashier.alipay.net/standard/86cdedf69ef548c29dcec9b02347bc47/templateFlow.phtm?viewModelId=sync%24normalPayerAuthViewModel%24async_normalPayerIdentityAuthViewModel&asyncRequest.sign=MCwCFCrNbYoyWF%2FD88wKosSDZZmpo45WAhQGjMFqAzD7OupMAsHVnHQywJ%2FeHQ%3D%3D" />
+                                                <div class="login-panel">
+                    
+
+                    <div class="mi-form-item commonAccountContainer">
+                        <label class="mi-label">支付宝账户：</label>
+
+                        <input type="text" name="loginId" class="mi-input mi-input-account" value="" id="J_tLoginId"/>
+
+                        <a class="aside-link" href="http://help.alipay.com/lab/help_detail.htm?help_id=216509"
+                           seed="link-forget-loginpw" target="_blank">忘记账户名？</a>
+                        <div class="mi-form-explain"></div>
+                    </div>
+                  
+                    <div class="mi-form-item" id="J_fakePwdContainer">
+                        <label class="mi-label">支付密码：</label>
+                        <span><input type="password" name="pwd" class="mi-input mi-input-account" value="" id="J_fakePasswordInput" style="vertical-align: middle;padding: 5px 4px;"></span>
+                        <span style="_display:inline-block; margin-left:4px"><a target="_blank" href="https://self.alipay.com/selfhelp/passwordfind/index.htm?type=P" style="line-height: 24px;">忘记密码？</a>  </span>
+                        <div class="mi-form-explain">
+                            <p>
+                                请输入账户的 <span style="color:red;">支付密码</span>，不是登录密码。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mi-form-item fn-hide" id="J_disabledPwdContainer">
+                        <label class="mi-label">支付密码：</label>
+                        <input type="text" value="无需输入支付密码" disabled="disabled" readonly="readonly" id="J_fakePwdInput" name="fake_pwd" class="mi-input mi-input-account" oncontextmenu="return false" onpaste="return false" oncopy="return false" oncut="return false" autocomplete="off" style="vertical-align: middle;padding: 5px 4px;background-color: #EBEBE4;" />
+                        <a class="aside-link" href="https://self.alipay.com/selfhelp/passwordfind/index.htm?type=P" target="_blank">忘记密码？</a>
+                        <div class="mi-form-explain">
+                            账户未激活，<a href="https://lab.alipay.com/user/reg/activate/index.htm" seed="activation-account-at-Tlogin" target="_blank">点此激活</a>或点击下一步继续支付
+                        </div>
+                    </div>
+
+                    <div role="alieditContainer" class="fn-hide"></div>
+
+                    <div class="mi-form-item submitContainer">
+                        <label class="mi-label">&nbsp;</label>
+                        <a href="javascript:;" class="mi-button mi-button-lorange" role="submitBtn">
+                            <span class="mi-button-text">下一步</span>
+                        </a>
+                        <span class="mi-loading-text fn-hide">正在提交中，请稍候</span>
+                    </div>
+                                                                            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+-->
+
+
+    <div id="teLogin-right" style="width: 100%;height: 100%;min-height: 340px;" class="teBox" data-module="excashier/loginMemberQ/0.0.1/loginMemberQ" data-mode="SYNC" data-url="">
+        <div class="teBox-in">
+            <h3>使用支付宝，轻松付款！</h3>
+            <div>
+                <div class="line"></div>
+            </div>
+            <div class="quick-login-explain" style="margin-top: 10px;margin-bottom: 0;">支持国内众多主流银行，有卡就能付！</div>
+            <ol class="ui-step ui-step-3 fn-mt20" style="width: 100%;margin-bottom: 20px;">
+                <li class="ui-step-item ui-step-current" style="width: 30%;">
+                    <span>账号安全校验</span>
+                </li>
+                <li class="ui-step-item" style="width: 30%;">
+                    <span>登录认证</span>
+                </li>
+                <li class="ui-step-item ui-step-last" style="width: 30%;">
+                    <span>收银付款</span>
+                </li>
+            </ol>
+            <div class="teForm">
+
+                <form action="http://excashier.alipay.net/standard/86cdedf69ef548c29dcec9b02347bc47/templateFlow.json?method=ajaxpost" method="post" class="mi-form" id="J_QloginForm">
+                    <input type="hidden" name="_form_token" value="cbSd13CJkAFZhsX9h84vTBSPGuxVX49S"/>
+                    <input type="hidden" name="viewModelId" value="sync$simplePayerAuthViewModel"/>
+                    <input type="hidden" name="quickAccountIdentiAuthUrl" value="http://excashier.alipay.net/standard/86cdedf69ef548c29dcec9b02347bc47/templateFlow.phtm?viewModelId=sync%24simplePayerAuthViewModel%24async_simplePayerIdentityAuthViewModel&asyncRequest.sign=MC0CFAC8nh9%2BnxlPQETWw%2F3X38chOfkVAhUAk4j78q1OBKi8j8Ur0DGAcqh8D10%3D"/>
+
+                    <div class="login-panel fn-hide" data-account="J_moaWithNullT">
+                        <div class="mi-form-item quickAccountContainer">
+                            <label class="mi-label">输入账号：</label>
+                            <input type="text" name="loginId" class="mi-input mi-input-account" value="" id="J_qLoginId"/>
+                            <div class="mi-form-explain">请输入您的支付宝账号或您想用于支付的手机号码</div>
+                        </div>
+                        <div role="alieditContainer"></div>
+                        <div class="mi-form-item submitContainer">
+                            <label class="mi-label">&nbsp;</label>
+                            <a id="J_moaWithNullT_a" href="javascript:;" class="mi-button mi-button-lorange" role="submitBtn">
+                                <span class="mi-button-text">下一步</span>
+                            </a>
+                            <span class="mi-loading-text fn-hide">正在提交中，请稍候</span>
+                        </div>
+                    </div>
+
+                    <div class="login-panel fn-hide" data-account="J_moaWithNullQPwd">
+                        <div class="mi-form-item quickAccountContainer">
+                            <label class="mi-label">输入账号：</label>
+                            <input type="text" name="loginId" class="mi-input mi-input-account" value=""
+                                   id="J_qLoginId12"/>
+
+                            <div class="mi-form-explain">请输入您的支付宝账号或您想用于支付的手机号码</div>
+                        </div>
+                        <div role="alieditContainer"></div>
+                        <div class="mi-form-item submitContainer">
+                            <label class="mi-label">&nbsp;</label>
+                            <a id="J_moaWithNullQPwd_a" href="javascript:;" class="mi-button mi-button-lorange" role="submitBtn">
+                                <span class="mi-button-text">下一步</span>
+                            </a>
+                            <span class="mi-loading-text fn-hide">正在提交中，请稍候</span>
+                        </div>
+                    </div>
+
+                    <div class="login-panel fn-hide" data-account="J_moaWithNullQCard">
+                        <div class="mi-form-item quickAccountContainer">
+                            <label class="mi-label">输入账号：</label>
+                            <input type="text" name="loginId" class="mi-input mi-input-account" value=""
+                                   id="J_qLoginId13"/>
+
+                            <div class="mi-form-explain">请输入您的支付宝账号或您想用于支付的手机号码</div>
+                        </div>
+                        <div role="alieditContainer"></div>
+                        <div class="mi-form-item submitContainer">
+                            <label class="mi-label">&nbsp;</label>
+                            <a id="J_moaWithNullQCard_a" href="javascript:;" class="mi-button mi-button-lorange" role="submitBtn">
+                                <span class="mi-button-text">下一步</span>
+                            </a>
+                            <span class="mi-loading-text fn-hide">正在提交中，请稍候</span>
+                        </div>
+                    </div>
+
+                    <div class="login-panel fn-hide" data-account="J_moaWithT">
+                        <div class="mi-form-item quickAccountContainer">
+                            <label class="mi-label">使用账号：</label>
+                            <input type="text" name="loginId" class="mi-input mi-input-account fn-hide" value="" id="J_qLoginId2"/>
+
+                            <p class="" title="www.hanyee.cn@gmail.com" style="font-weight: 700;font-family: verdana, Arial;color: #FF9700;font-size: 14px;">
+                                www.hanyee.cn@gmail.com
+                                <a class="" href="" title="金账户">
+                                    <img src="https://img.alipay.com/img/vip/ico-vip-s.gif" height="16" width="16" alt="金账户">
+                                </a>
+                                <a style="font-size: 12px;font-weight: normal;" href="javascript:;">修改</a>
+                            </p>
+                            <div class="mi-form-explain">账号已经通过验证</div>
+                        </div>
+                        <div class="mi-form-item" id="J_fakePwdContainer1">
+                            <label class="mi-label">支付密码：</label>
+                            <span><input type="password" name="pwd" class="mi-input mi-input-account" value=""
+                                         id="J_fakePasswordInput"
+                                         style="vertical-align: middle;padding: 5px 4px;"></span>
+                            <span style="_display:inline-block; margin-left:4px">
+                                <a target="_blank" href="https://self.alipay.com/selfhelp/passwordfind/index.htm?type=P" style="line-height: 24px;">忘记密码？</a>
+                            </span>
+
+                            <div class="mi-form-explain">
+                                <p>请输入账户的 <span style="color:red;">支付密码</span>，不是登录密码。</p>
+                            </div>
+                        </div>
+                        <div role="alieditContainer"></div>
+                        <div class="mi-form-item submitContainer">
+                            <label class="mi-label">&nbsp;</label>
+                            <a href="javascript:;" class="mi-button mi-button-lorange" role="submitBtn">
+                                <span class="mi-button-text">下一步</span>
+                            </a>
+                            <span class="mi-loading-text fn-hide">正在提交中，请稍候</span>
+                        </div>
+                    </div>
+
+                    <div class="login-panel fn-hide" data-account="J_moaWithQCard">
+                        <div class="mi-form-item quickAccountContainer">
+                            <label class="mi-label">使用账号：</label>
+                            <input type="text" name="loginId" class="mi-input mi-input-account fn-hide" value="" id="J_qLoginId4"/>
+                            <p class="" title="www.hanyee.cn@gmail.com"
+                               style="font-weight: 700;font-family: verdana, Arial;color: #FF9700;font-size: 14px;">
+                                18602111850
+                                <a style="font-size: 12px;font-weight: normal;" href="javascript:;">修改</a>
+                            </p>
+
+                            <div class="mi-form-explain">账号已经通过验证</div>
+                        </div>
+                        <div class="mi-form-item" id="J_fakePwdContainer2">
+                            <label class="mi-label">校验码：</label>
+                                <span><input type="password" name="pwd" class="mi-input mi-input-account" value="" id="J_fakePasswordInput2" style="vertical-align: middle;padding: 5px 4px;"></span>
+                                <span style="_display:inline-block; margin-left:4px">
+                                    <a target="_blank" href="https://self.alipay.com/selfhelp/passwordfind/index.htm?type=P" style="line-height: 24px;">重新发送</a>
+                                </span>
+                            <div class="mi-form-explain">
+                                <p>校验码已经发送成功。</p>
+                            </div>
+                        </div>
+                        <div role="alieditContainer"></div>
+                        <div class="mi-form-item submitContainer">
+                            <label class="mi-label">&nbsp;</label>
+                            <a href="javascript:;" class="mi-button mi-button-lorange" role="submitBtn">
+                                <span class="mi-button-text">下一步</span>
+                            </a>
+                            <span class="mi-loading-text fn-hide">正在提交中，请稍候</span>
+                        </div>
+                    </div>
+
+                    <div class="login-panel fn-hide" data-account="J_moaWithQ">
+                        <div class="mi-form-item quickAccountContainer">
+                            <label class="mi-label">使用账号：</label>
+                            <input type="text" name="loginId" class="mi-input mi-input-account fn-hide" value=""
+                                   id="J_qLoginId3"/>
+
+                            <p class="" title="www.hanyee.cn@gmail.com"
+                               style="font-weight: 700;font-family: verdana, Arial;color: #FF9700;font-size: 14px;">
+                                18602111850
+                                <a style="font-size: 12px;font-weight: normal;" href="javascript:;">修改</a>
+                            </p>
+
+                            <div class="mi-form-explain">账号已经通过验证</div>
+                        </div>
+                        <div class="mi-form-item" id="J_fakePwdContainer3">
+                            <label class="mi-label">支付密码：</label>
+                            <span><input type="password" name="pwd" class="mi-input mi-input-account" value="" id="J_fakePasswordInput3"
+                                         style="vertical-align: middle;padding: 5px 4px;"></span>
+                                                    <span style="_display:inline-block; margin-left:4px">
+                                                        <a target="_blank"
+                                                           href="https://self.alipay.com/selfhelp/passwordfind/index.htm?type=P"
+                                                           style="line-height: 24px;">忘记密码？</a>
+                                                    </span>
+
+                            <div class="mi-form-explain">
+                                <p>请输入账户的 <span style="color:red;">支付密码</span>，不是登录密码。</p>
+                            </div>
+                        </div>
+                        <div role="alieditContainer"></div>
+                        <div class="mi-form-item submitContainer">
+                            <label class="mi-label">&nbsp;</label>
+                            <a href="javascript:;" class="mi-button mi-button-lorange" role="submitBtn">
+                                <span class="mi-button-text">下一步</span>
+                            </a>
+                            <span class="mi-loading-text fn-hide">正在提交中，请稍候</span>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <!-- fm-input -->
+        </div>
+        <!-- teBox-in -->
+        </div>
+
+        <div>
+            <input type="radio" name="accountType" id="J_moaWithNullT" /><label class="switchAccountType" for="J_moaWithNullT" style="margin-right:20px;">MOA不带账号T</label>
+            <input type="radio" name="accountType" id="J_moaWithNullQPwd" /><label class="switchAccountType" for="J_moaWithNullQPwd" style="margin-right:20px;">MOA不带账号Q密码</label>
+            <input type="radio" name="accountType" id="J_moaWithNullQCard" /><label class="switchAccountType" for="J_moaWithNullQCard" style="margin-right:20px;">MOA不带账号Q绑定卡</label>
+
+            <input type="radio" name="accountType" id="J_moaWithT" /><label class="switchAccountType" for="J_moaWithT" style="margin-right:20px;">MOA带T账号</label>
+            <input type="radio" name="accountType" id="J_moaWithQ" /><label class="switchAccountType" for="J_moaWithQ" style="margin-right:20px;">MOA带Q账号有密码</label>
+            <input type="radio" name="accountType" id="J_moaWithQCard" /><label class="switchAccountType" for="J_moaWithQCard" style="margin-right:20px;">MOA带Q账号绑卡</label>
+        </div>
+    </div>
+    <!-- teLogin -->
+</div>
+ <!-- CMS:/securitycore/entrance/rds.vm开始:/securitycore/entrance/rds.vm -->
+  <script type="text/javascript">
+    var form_tk = "k43kWLXx7Q2HPS20HlRotgGTeW0YiNx8";
+    var json_ua = null;
+  </script>
+   <script type="text/javascript" charset="utf-8" src='http://rds.t364.alipay.net/ua_excashier_login.js?t=20121204'></script>
+
+<!-- CMS:/securitycore/entrance/rds.vm结束:/securitycore/entrance/rds.vm -->
+
+<div id="footer">
+    <p> 支付宝版权所有 2004-2012 ICP证：浙B2-20100257</p>
+    <span id="ServerNum">excashier.p181.alipay.net</span>
+</div>
+</div>
+<!-- /container -->
+
+<script type="text/javascript">
+seajs.config({
+    alias:{
+        'excashier':'http://assets.p337.alipay.net/excashier'
+    },
+    debug:1
+});
+
+seajs.use(['excashier/stage/0.0.1/stage-debug', 'jquery', 'excashier/xbox/1.0.0/xbox-debug'], function (Stage, $, xbox) {
+    $(function () {
+        Stage.init(document.body);
+
+        //左边Q账号报错为：您的邮箱或手机号是支付宝账户，<a href='#' id='J_useAlipayAccount'>请点此登录支付宝付款</a>，或重新填写。
+        // 点击“请点此登录支付宝付款”需要绑定事件，直接focus到T账号输入框
+        $(".quickAccountContainer").click(function(e){
+            var $target = $(e.target);
+              if( $target.is("[id=J_useAlipayAccount]") ) {
+                  var commonAccount = $(".commonAccountContainer :text[name=loginId]")[0]
+                  commonAccount && commonAccount.focus();
+              }
+        });
+        
+        // anti fishing xbox tip
+        if($('#J_antiFishing')[0]){
+            var origin = $('#J_antiFishing');
+            var box = new xbox({
+                type: "string",
+                width: 520,
+                value: origin.html()
+            });
+            origin.remove();
+            box.show();
+            $('#J_antiFishingPay').click(function(){
+                box.hide();
+            });
+            $('#J_antiFishingStop').click(function(){
+                
+                $('#J_antiFishingViewCase').show().find('input').click(function(){
+                    window.open($('#J_openUrl').val(),'_blank');
+                });
+                
+            });
+        }
+    });
+
+
+    function hideAllPanel() {
+        $('.login-panel').hide();
+    }
+    $('.switchAccountType').click(function(e){
+        $(($(this).attr('for'))).click();
+    });
+
+    $('input[name=accountType]').click(function(e){
+        hideAllPanel();
+        $('div[data-account='+this.id+']').show();
+        $('.ui-step-item').removeClass('ui-step-current');
+
+        if(/(J_moaWithNull)/.test(this.id)) $('.ui-step-item').eq(0).addClass('ui-step-current');
+        else $('.ui-step-item').eq(1).addClass('ui-step-current');
+        //if(!/(J_moaWithNull)/.test(this.id)) $('.ui-step-item').eq(1).addClass('ui-step-current');
+
+    });
+
+    $('#J_moaWithNullT_a').click(function(){
+        $('#J_moaWithT').click();
+    });
+
+    $('#J_moaWithNullQPwd_a').click(function () {
+        $('#J_moaWithQ').click();
+    });
+
+    $('#J_moaWithNullQCard_a').click(function () {
+        $('#J_moaWithQCard').click();
+    });
+
+
+});
+
+</script>
+</body>
+</html>
